@@ -1,0 +1,951 @@
+<!--
+© YS Developers
+
+This software has been developed and provided by YS Developers
+for use with YT Music.
+
+Permission is hereby granted to any individual or organization
+to use, copy, and modify this code for personal or non-commercial purposes.
+
+Redistribution is allowed, provided that this notice remains intact
+and proper credit is given to YS Developers.
+
+Commercial use, including selling, licensing, or monetizing this code
+in any form, is strictly prohibited without prior written permission
+from YS Developers.
+
+All rights reserved.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <!-- Image Preload -->
+<link rel="preload" as="image" href="images/page backrounds/dance.png">
+<link rel="preload" as="image" href="images/container backrounds/1.png">
+<link rel="preload" as="image" href="images/container backrounds/2.png">
+<link rel="preload" as="image" href="images/container backrounds/3.png">
+<link rel="preload" as="image" href="images/container backrounds/4.png">
+<link rel="preload" as="image" href="images/container backrounds/5.png">
+<link rel="preload" as="image" href="images/container backrounds/6.png">
+<link rel="preload" as="image" href="images/container backrounds/7.png">
+<link rel="preload" as="image" href="images/container backrounds/8.png">
+<link rel="preload" as="image" href="images/container backrounds/9.png">
+<link rel="preload" as="image" href="images/container backrounds/10.png">
+<link rel="preload" as="image" href="images/yt.png">
+<link rel="preload" as="image" href="images/volume.gif">
+    <title>dance - YT Music</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <style>
+        /* General page and body styling */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #e6e6e6;
+            /* Light grey background */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            text-align: center;
+            position: relative;
+            background-image: url('images/page backrounds/dance.png');
+            /* Placeholder for the background image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Top bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10.5rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: start;
+            padding: 0 1rem;
+            z-index: 50;
+            transition: box-shadow 300ms ease;
+        }
+
+        .top-bar-shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-top: 10px;
+        }
+
+       .logo {
+    height: 95px;
+    width: 95px;
+    background-image: url('images/yt.png');
+    background-size: cover; /* Ensures the whole image fits */
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    display: block;
+    border-radius: 20%;
+    border: 1px solid rgb(0, 26, 255); /* Temporary: if you see a blue box but no image, the path is the problem */
+}
+
+
+
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: underline;
+            color: black;
+        }
+
+
+
+
+        /* Main container for the app layout */
+        .app-container {
+            position: relative;
+            width: 100%;
+            max-width: 32rem;
+            /* Reduced from 42rem */
+            padding: 1rem;
+            /* Reduced from 1.5rem */
+            border-radius: 1.5rem;
+            /* rounded-3xl */
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+            /* Adjusted shadow */
+            background-color: #ffffffda;
+            border: 2px solid #ccc;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        /* Top navigation bar with back/next buttons and page name */
+        .top-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 200px;
+            margin-bottom: 20px;
+            z-index: 100;
+
+        }
+
+        .nav-button {
+            background-color: rgba(0, 0, 0, 0.04);
+            color: black;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transform: scale(3.5);
+            font-size: 2.5rem;
+            box-shadow: blur(8);
+        }
+
+        .nav-button:hover {
+            background-color: #33333332;
+            transform: scale(2.5);
+            padding: 2px;
+        }
+
+        .nav-button:active {
+            transform: scale(0.95);
+        }
+
+        .page-name {
+            font-size: 3.5em;
+            font-weight: bold;
+        }
+
+        /* Page indicator dots */
+        .page-dots {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 30px;
+            z-index: 101;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: #ccc;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            width: 14px;
+            height: 14px;
+            background-color: #007bff;
+            /* Blue for the active dot */
+            box-shadow: 0 0 14px #007bff;
+        }
+
+        /* Status box at the top */
+        .status-box {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .app-container.active {
+            opacity: 1;
+            border: 4px solid #2563eb;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.7);
+        }
+
+        .page-viewport {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            border-radius: 1rem;
+            /* rounded-2xl */
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            border: 4px solid #d1d4da;
+            /* border-4 border-gray-400 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        /* Button grid for page numbers (p1-p10) */
+        .p-buttons {
+            position: relative;
+            margin-top: -1.5rem;
+            /* -mt-6 */
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            /* space-x-1 */
+        }
+
+
+        /* Button grid for intros (intro 1 - intro 10) */
+        .intro-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        /* Styling for the 3D buttons */
+        .button-3d {
+            background-color: #b0b0b0;
+            border: 2px solid #777;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            width: 8rem;
+            /* w-32 */
+            height: 2.5rem;
+            /* h-10 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            /* text-sm */
+            font-weight: 600;
+            border-radius: 9999px;
+            /* rounded-full */
+            color: white;
+        }
+
+        .button-3d:hover {
+            background: linear-gradient(to bottom, #b0b0b0, #707070);
+            transform: translateY(-2px) perspective(1px) translateZ(0);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                0 6px 10px rgba(0, 0, 0, 0.4),
+                0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-3d:active,
+        .button-3d.active {
+            background: linear-gradient(to bottom, #b0b0b0, #707070);
+            transform: translateY(-2px) perspective(1px) translateZ(0);
+            box-shadow:
+                inset 0 1px 0 rgba(0, 0, 0, 0.3),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                0 6px 10px rgba(77, 157, 242, 1),
+                0 2px 4px rgba(0, 0, 0, 2);
+        }
+
+        .button-4d {
+            background-color: #e0e0e0;
+            border-top: 2px solid #ccc;
+            border-left: 2px solid #ccc;
+            border-right: 2px solid #ccc;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+            color: #333;
+            transition: all 300ms ease;
+            width: 2.5rem;
+            /* w-10 */
+            height: 1.5rem;
+            /* h-6 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            /* text-xs */
+            font-weight: 600;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .button-4d.active {
+            background-color: #2563eb;
+            border-top-color: #2563eb;
+            border-left-color: #2563eb;
+            border-right-color: #2563eb;
+            color: white;
+            box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.2);
+            transform: scale(1.1) translateY(-0.5rem);
+            z-index: 20;
+        }
+
+        .button-4d:hover {
+            transform: scale(1.05);
+        }
+
+        .button-4d.active:hover {
+            transform: scale(1.1) translateY(-0.5rem);
+        }
+
+        .song-button {
+            border-radius: 8px;
+            background: linear-gradient(to bottom, #a0a0a0, #606060);
+            /* Gradient for depth */
+            border: 1px solid #505050;
+            /* Darker border */
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                /* Top highlight */
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+                /* Bottom shadow */
+                0 4px 6px rgba(0, 0, 0, 0.3),
+                /* Main button shadow */
+                0 1px 3px rgba(0, 0, 0, 0.2);
+            /* Smaller shadow for depth */
+            transform: perspective(1px) translateZ(0);
+            /* Force hardware acceleration */
+            transition: all 0.2s ease;
+            color: white;
+            /* Ensure text is white */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            /* Text shadow for pop */
+            padding: 10px 15px;
+        }
+
+        .song-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 7px 0 #666;
+        }
+
+        .song-button:active {
+            box-shadow: 0 2px 0 #666;
+            transform: translateY(4px);
+        }
+
+        .song-button.selected {
+            background-color: #007bff !important;
+            border: 3px solid #4CAF50 !important;
+            /* Changed outline color to a bright green */
+            box-shadow: 0 8px 0 #0056b3 !important;
+            transform: scale(1.15) translateY(-1px) !important;
+        }
+
+        .song-button.selected:active {
+            box-shadow: 0 4px 0 #0056b3 !important;
+            transform: scale(1.15) translateY(3px) !important;
+        }
+
+
+        /* Play buttons section */
+        .play-buttons {
+            display: none;
+            /* Initially hidden */
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .play-buttons.visible {
+            display: flex;
+        }
+
+        .play-buttons h4 {
+            margin: 0;
+            font-size: 1em;
+            color: #ffffff;
+            text-shadow: #333;
+            background-color: #a0a0a06d;
+            border-radius: 5px;
+        }
+
+        .play-buttons .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .play-buttons .button-group .button-3d {
+            padding: 10px 15px;
+            font-size: 1em;
+        }
+
+
+
+
+        .audio-controls {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #audioPlayer {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Audio player and visualizer */
+        .audio-player-container {
+            display: none;
+            /* Initially hidden */
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .audio-player-container.visible {
+            display: flex;
+            height: 30%;
+            width: 30%;
+            align-items: center;
+        }
+
+        /* Audio player and visualizer */
+        .audio-player-container {
+            display: none;
+            /* Initially hidden */
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+
+        }
+
+        .audio-player-container.visible {
+            display: flex;
+            height: 30%;
+            width: 30%;
+            align-items: center;
+            border-radius: 50%;
+            justify-content: center;
+        }
+
+        .volume-visualizer {
+            display: none;
+            /* Initially hidden */
+
+            margin-top: 10px;
+            justify-self: center;
+
+
+        }
+
+        .volume-visualizer.visible {
+            display: grid;
+            border-radius: 50%;
+
+        }
+
+        .gifgif {
+            border-radius: 5px;
+            display: grid;
+            width: 335%;
+            display: block;
+            margin: auto;
+
+        }
+        /* Order Now Button */
+.order-now-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 22px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 999px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    transition: all 0.2s ease;
+    z-index: 999;
+}
+
+.order-now-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.order-now-button:active {
+    transform: translateY(1px);
+}
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+    <div class="logo-container">
+        <a href="index.html" class="logo"></a>
+        <a href="index.html" class="logo-text">Y.T. Music</a>
+    </div></div>
+    <div class="top-nav">
+        <a href="dj.html" class="nav-button">&lt;</a>
+        <div class="page-name">dance</div>
+        <a href="freilich.html" class="nav-button">&gt;</a>
+    </div>
+
+    <!-- Page Indicator Dots -->
+    <div class="page-dots">
+        <div class="dot"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <!-- Status Box -->
+        <div class="status-box" id="statusBox">
+            Select an MP3 to play
+        </div>
+        <div id="pages-container" class="page-viewport">
+            <!-- Pages with backgrounds and intro buttons will be dynamically added here -->
+
+
+            <!-- Intro Buttons (intro 1 to intro 10) -->
+            <div class="intro-buttons" id="introButtons">
+                <button class="button-3d" id="introbtn1" data-intro-index="1">Intro 1</button>
+                <button class="button-3d" id="introbtn2" data-intro-index="2">Intro 2</button>
+                <button class="button-3d" id="introbtn3" data-intro-index="3">Intro 3</button>
+                <button class="button-3d" id="introbtn4" data-intro-index="4">Intro 4</button>
+                <button class="button-3d" id="introbtn5" data-intro-index="5">Intro 5</button>
+                <button class="button-3d" id="introbtn6" data-intro-index="6">Intro 6</button>
+                <button class="button-3d" id="introbtn7" data-intro-index="7">Intro 7</button>
+                <button class="button-3d" id="introbtn8" data-intro-index="8">Intro 8</button>
+                <button class="button-3d" id="introbtn9" data-intro-index="9">Intro 9</button>
+                <button class="button-3d" id="introbtn0" data-intro-index="0">Intro 10</button>
+            </div>
+        </div>
+        <!-- P-Pages Buttons (p1 to p10) -->
+        <div class="p-buttons" id="pButtons">
+            <button class="button-4d" data-p-index="1">P1</button>
+            <button class="button-4d" data-p-index="2">P2</button>
+            <button class="button-4d" data-p-index="3">P3</button>
+            <button class="button-4d" data-p-index="4">P4</button>
+            <button class="button-4d" data-p-index="5">P5</button>
+            <button class="button-4d" data-p-index="6">P6</button>
+            <button class="button-4d" data-p-index="7">P7</button>
+            <button class="button-4d" data-p-index="8">P8</button>
+            <button class="button-4d" data-p-index="9">P9</button>
+            <button class="button-4d" data-p-index="0">P10</button>
+        </div>
+        <!-- 3D Play Buttons (1-0) -->
+
+
+
+        <!-- Audio Player and Visualizer Section -->
+        <div class="audio-player-container" id="audioPlayerContainer">
+            <audio id="audioPlayer" loop></audio>
+            <div class="volume-visualizer" id="volumeVisualizer">
+                <img src="images/volume.gif" class="gifgif">
+            </div>
+        </div>
+    </div>
+    <div class="play-buttons" id="playButtons">
+
+
+
+        <div class="button-group">
+
+            <div>
+                <h4>INTRO</h4>
+                <div class="button-group">
+                    <button class="song-button" data-play-index="1">1</button>
+                    <button class="song-button" data-play-index="2">2</button>
+                    <button class="song-button" data-play-index="3">3</button>
+                </div>
+            </div>
+            <div>
+                <h4>VARIATION</h4>
+                <div class="button-group">
+                    <button class="song-button" data-play-index="4">A</button>
+                    <button class="song-button" data-play-index="5">B</button>
+                    <button class="song-button" data-play-index="6">C</button>
+                    <button class="song-button" data-play-index="7">D</button>
+                </div>
+            </div>
+            <div>
+                <h4>ENDING</h4>
+                <div class="button-group">
+                    <button class="song-button" data-play-index="8">1</button>
+                    <button class="song-button" data-play-index="9">2</button>
+                    <button class="song-button" data-play-index="0">3</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script>
+
+
+
+            document.addEventListener('DOMContentLoaded', () => {
+            // Preload all images so they appear instantly
+const imagesToPreload = [
+"images/page backrounds/dance.png",
+"images/container backrounds/1.png",
+"images/container backrounds/2.png",
+"images/container backrounds/3.png",
+"images/container backrounds/4.png",
+"images/container backrounds/5.png",
+"images/container backrounds/6.png",
+"images/container backrounds/7.png",
+"images/container backrounds/8.png",
+"images/container backrounds/9.png",
+"images/container backrounds/10.png",
+"images/yt.png",
+"images/volume.gif"
+];
+
+imagesToPreload.forEach(src => {
+    const img = new Image();
+    img.src = src;
+});
+                // Get all necessary DOM elements
+                const pButtons = document.querySelectorAll('#pButtons .button-4d');
+                const introButtons = document.querySelectorAll('#introButtons .button-3d');
+                const playButtonsContainer = document.getElementById('playButtons');
+                const playButtons = playButtonsContainer.querySelectorAll('.song-button');
+                const statusBox = document.getElementById('statusBox');
+                const audioPlayer = document.getElementById('audioPlayer');
+                const audioPlayerContainer = document.getElementById('audioPlayerContainer');
+                const volumeVisualizer = document.getElementById('volumeVisualizer');
+                const pageDots = document.querySelectorAll('.page-dots .dot');
+
+
+
+                // State variables to keep track of the current selection
+                let selectedIntroIndex = null;
+                let selectedPlayIndex = null;
+                const pageName = "ballad";
+
+                // --- Navigation Logic ---
+                const pages = ["index.html", "ballad.html", "freilich.html", "dance.html", "dj-intros.html", "other.html"];
+                const currentPage = "ballad";
+                const currentIndex = pages.indexOf(currentPage + ".html");
+                let selectedPIndex = 1; // Default selected page is P1
+
+
+                // --- Button Handlers ---
+
+
+                // P-page buttons handler
+                pButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remove active class from all P buttons and add to the clicked one
+                        pButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        selectedPIndex = parseInt(button.dataset.pIndex);
+
+                        // Reset intro and play selections
+                        resetSelection();
+                        document.getElementById('pages-container').style.backgroundImage = `url('images/container backrounds/${selectedPIndex}.png')`;
+                        changeintronames()
+                    });
+                });
+
+
+
+                // Intro buttons handler
+                introButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remove active class from all Intro buttons and add to the clicked one
+                        introButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        selectedIntroIndex = parseInt(button.dataset.introIndex);
+
+                        // Show the play buttons
+                        playButtonsContainer.classList.add('visible');
+
+                        // Reset play selection
+                        resetPlaySelection();
+                        updateStatusBox();
+                    });
+                });
+
+                // Play buttons handler
+                playButtons.forEach(button => {
+                    button.addEventListener('click', async () => {
+                        // Remove active class from all Play buttons and add to the clicked one
+                        playButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        selectedPlayIndex = parseInt(button.dataset.playIndex);
+
+                        // Construct the file path based on selection
+                        const fileName = `${selectedPIndex}${selectedIntroIndex}${selectedPlayIndex}.mp3`;
+                        const filePath = `mp3/dance/${fileName}`;
+
+                        updateStatusBox("Loading...");
+
+                        // Simulate file existence check by trying to fetch the file
+                        try {
+                            // Using a dummy fetch call. In a real-world scenario, you would have a list of valid MP3s.
+                            // For this demo, we'll assume a file is "empty" if a specific combination is clicked.
+                            const isFileEmpty = (selectedPIndex === 0 && selectedIntroIndex === 0 && selectedPlayIndex === 1);
+                            if (isFileEmpty) {
+                                throw new Error("File empty");
+                            }
+
+                            // Load and play the audio
+                            audioPlayer.src = filePath;
+                            audioPlayer.load();
+                            await audioPlayer.play();
+
+                            // Show audio player and visualizer
+                            audioPlayerContainer.classList.add('visible');
+                            volumeVisualizer.classList.add('visible');
+                            updateStatusBox("playing");
+                        } catch (error) {
+                            // Handle "empty" file case
+                            audioPlayer.pause();
+                            audioPlayer.src = "";
+                            audioPlayerContainer.classList.remove('visible');
+                            volumeVisualizer.classList.remove('visible');
+                            updateStatusBox("empty");
+                        }
+                    });
+                });
+
+                // --- Helper Functions ---
+
+                // Function to update the status box text
+                function updateStatusBox(status = "") {
+                    // Update status box text to show current selection or guidance
+                    if (status === "Select an intro...") {
+                         statusBox.textContent = `P${selectedPIndex} selected. Select an intro...`;
+                    } else if (status === "Select a play button to start...") {
+                        statusBox.textContent = `P${selectedPIndex} Intro ${selectedIntroIndex === 0 ? '10' : selectedIntroIndex} selected. Select a play button to start...`;
+                    } else if (selectedPIndex !== null && selectedIntroIndex !== null && selectedPlayIndex !== null) {
+                        statusBox.textContent = `P${selectedPIndex} Intro ${selectedIntroIndex === 0 ? '10' : selectedIntroIndex} Play ${selectedPlayIndex === 0 ? '3' : selectedPlayIndex} is ${status}`;
+                    } else if (selectedPIndex !== null && selectedIntroIndex !== null) {
+                        statusBox.textContent = `P${selectedPIndex} Intro ${selectedIntroIndex === 0 ? '10' : selectedIntroIndex} selected. Select a play button to start...`;
+                    } else if (selectedPIndex !== null) {
+                         statusBox.textContent = `P${selectedPIndex} selected. Select an intro...`;
+                    } else {
+                        statusBox.textContent = `Select an MP3 to play`;
+                    }
+                }
+                //trying to change the numbers of the intros
+                function changeintronames(){
+                    if (selectedPIndex === 1){
+                        console.log (selectedPIndex === 1)
+                        document.getElementById('introbtn1').textContent = 'dance 1';
+                        document.getElementById('introbtn2').textContent = 'dance 2';
+                        document.getElementById('introbtn3').textContent = 'dance 3';
+                        document.getElementById('introbtn4').textContent = 'dance 4';
+                        document.getElementById('introbtn5').textContent = 'dance 5';
+                        document.getElementById('introbtn6').textContent = 'dance 6';
+                        document.getElementById('introbtn7').textContent = 'dance 7';
+                        document.getElementById('introbtn8').textContent = 'dance 8';
+                        document.getElementById('introbtn9').textContent = 'dance 9';
+                        document.getElementById('introbtn0').textContent = 'dance 10';
+                    }else  if (selectedPIndex === 2){
+                        console.log (selectedPIndex === 2)
+                        document.getElementById('introbtn1').textContent = 'dance 11';
+                        document.getElementById('introbtn2').textContent = 'dance 12';
+                        document.getElementById('introbtn3').textContent = 'dance 13';
+                        document.getElementById('introbtn4').textContent = 'dance 14';
+                        document.getElementById('introbtn5').textContent = 'dance 15';
+                        document.getElementById('introbtn6').textContent = 'dance 16';
+                        document.getElementById('introbtn7').textContent = 'dance 17';
+                        document.getElementById('introbtn8').textContent = 'dance 18';
+                        document.getElementById('introbtn9').textContent = 'dance 19';
+                        document.getElementById('introbtn0').textContent = 'dance 20';
+                    }else  if (selectedPIndex === 3){
+                        console.log (selectedPIndex === 3)
+                        document.getElementById('introbtn1').textContent = 'dance 21';
+                        document.getElementById('introbtn2').textContent = 'dance 22';
+                        document.getElementById('introbtn3').textContent = 'dance 23';
+                        document.getElementById('introbtn4').textContent = 'dance 24';
+                        document.getElementById('introbtn5').textContent = 'dance 25';
+                        document.getElementById('introbtn6').textContent = 'dance 26';
+                        document.getElementById('introbtn7').textContent = 'dance 27';
+                        document.getElementById('introbtn8').textContent = 'dance 28';
+                        document.getElementById('introbtn9').textContent = 'dance 29';
+                        document.getElementById('introbtn0').textContent = 'dance 30';
+                    }else  if (selectedPIndex === 4){
+                        console.log (selectedPIndex === 4)
+                        document.getElementById('introbtn1').textContent = 'dance 31';
+                        document.getElementById('introbtn2').textContent = 'dance 32';
+                        document.getElementById('introbtn3').textContent = 'dance 33';
+                        document.getElementById('introbtn4').textContent = 'dance 34';
+                        document.getElementById('introbtn5').textContent = 'dance 35';
+                        document.getElementById('introbtn6').textContent = 'dance 36';
+                        document.getElementById('introbtn7').textContent = 'dance 37';
+                        document.getElementById('introbtn8').textContent = 'dance 38';
+                        document.getElementById('introbtn9').textContent = 'dance 39';
+                        document.getElementById('introbtn0').textContent = 'dance 40';
+                    }else  if (selectedPIndex === 5){
+                        console.log (selectedPIndex === 5)
+                        document.getElementById('introbtn1').textContent = 'dance 41';
+                        document.getElementById('introbtn2').textContent = 'dance 42';
+                        document.getElementById('introbtn3').textContent = 'dance 43';
+                        document.getElementById('introbtn4').textContent = 'dance 44';
+                        document.getElementById('introbtn5').textContent = 'dance 45';
+                        document.getElementById('introbtn6').textContent = 'dance 46';
+                        document.getElementById('introbtn7').textContent = 'dance 47';
+                        document.getElementById('introbtn8').textContent = 'dance 48';
+                        document.getElementById('introbtn9').textContent = 'dance 49';
+                        document.getElementById('introbtn0').textContent = 'dance 50';
+                    }else  if (selectedPIndex === 6){
+                        console.log (selectedPIndex === 6)
+                        document.getElementById('introbtn1').textContent = 'dance 51';
+                        document.getElementById('introbtn2').textContent = 'dance 52';
+                        document.getElementById('introbtn3').textContent = 'dance 53';
+                        document.getElementById('introbtn4').textContent = 'dance 54';
+                        document.getElementById('introbtn5').textContent = 'dance 55';
+                        document.getElementById('introbtn6').textContent = 'dance 56';
+                        document.getElementById('introbtn7').textContent = 'dance 57';
+                        document.getElementById('introbtn8').textContent = 'dance 58';
+                        document.getElementById('introbtn9').textContent = 'dance 59';
+                        document.getElementById('introbtn0').textContent = 'dance 60';
+                    }else  if (selectedPIndex === 7){
+                        console.log (selectedPIndex === 7)
+                        document.getElementById('introbtn1').textContent = 'dance 61';
+                        document.getElementById('introbtn2').textContent = 'dance 62';
+                        document.getElementById('introbtn3').textContent = 'dance 63';
+                        document.getElementById('introbtn4').textContent = 'dance 64';
+                        document.getElementById('introbtn5').textContent = 'dance 65';
+                        document.getElementById('introbtn6').textContent = 'dance 66';
+                        document.getElementById('introbtn7').textContent = 'dance 67';
+                        document.getElementById('introbtn8').textContent = 'dance 68';
+                        document.getElementById('introbtn9').textContent = 'dance 69';
+                        document.getElementById('introbtn0').textContent = 'dance 70';
+                    }else  if (selectedPIndex === 8){
+                        console.log (selectedPIndex === 8)
+                        document.getElementById('introbtn1').textContent = 'dance 71';
+                        document.getElementById('introbtn2').textContent = 'dance 72';
+                        document.getElementById('introbtn3').textContent = 'dance 73';
+                        document.getElementById('introbtn4').textContent = 'dance 74';
+                        document.getElementById('introbtn5').textContent = 'dance 75';
+                        document.getElementById('introbtn6').textContent = 'dance 76';
+                        document.getElementById('introbtn7').textContent = 'dance 77';
+                        document.getElementById('introbtn8').textContent = 'dance 78';
+                        document.getElementById('introbtn9').textContent = 'dance 79';
+                        document.getElementById('introbtn0').textContent = 'dance 80';
+                    }else  if (selectedPIndex === 9){
+                        console.log (selectedPIndex === 9)
+                        document.getElementById('introbtn1').textContent = 'dance 81';
+                        document.getElementById('introbtn2').textContent = 'dance 82';
+                        document.getElementById('introbtn3').textContent = 'dance 83';
+                        document.getElementById('introbtn4').textContent = 'dance 84';
+                        document.getElementById('introbtn5').textContent = 'dance 85';
+                        document.getElementById('introbtn6').textContent = 'dance 86';
+                        document.getElementById('introbtn7').textContent = 'dance 87';
+                        document.getElementById('introbtn8').textContent = 'dance 88';
+                        document.getElementById('introbtn9').textContent = 'dance 89';
+                        document.getElementById('introbtn0').textContent = 'dance 90';
+                    }else  if (selectedPIndex === 0){
+                        console.log (selectedPIndex === 0)
+                        document.getElementById('introbtn1').textContent = 'dance 91';
+                        document.getElementById('introbtn2').textContent = 'dance 92';
+                        document.getElementById('introbtn3').textContent = 'dance 93';
+                        document.getElementById('introbtn4').textContent = 'dance 94';
+                        document.getElementById('introbtn5').textContent = 'dance 95';
+                        document.getElementById('introbtn6').textContent = 'dance 96';
+                        document.getElementById('introbtn7').textContent = 'dance 97';
+                        document.getElementById('introbtn8').textContent = 'dance 98';
+                        document.getElementById('introbtn9').textContent = 'dance 99';
+                        document.getElementById('introbtn0').textContent = 'dance 100';
+                    }
+                }
+                
+
+                // Function to reset intro and play selections
+                function resetSelection() {
+                    introButtons.forEach(btn => btn.classList.remove('active'));
+                    selectedIntroIndex = null;
+                    resetPlaySelection();
+                    playButtonsContainer.classList.remove('visible');
+                    updateStatusBox();
+                }
+
+                // Function to reset play selections
+                function resetPlaySelection() {
+                    playButtons.forEach(btn => btn.classList.remove('active'));
+                    selectedPlayIndex = null;
+                    audioPlayer.pause();
+                    audioPlayer.src = "";
+                    audioPlayerContainer.classList.remove('visible');
+                    volumeVisualizer.classList.remove('visible');
+                    updateStatusBox();
+                }
+
+                // --- Initial Setup: Select P1 on load ---
+                // 1. Activate the P1 button UI (P1 is the first element in pButtons, index 0)
+                if (pButtons.length > 0) {
+                    pButtons[0].classList.add('active');
+                }
+
+                // 2. Set initial background and intro names based on default selectedPIndex (which is 1)
+                document.getElementById('pages-container').style.backgroundImage = `url('images/container backrounds/${selectedPIndex}.png')`;
+                changeintronames();
+                updateStatusBox("Select an intro..."); // Update status box to guide the user
+
+            });
+        </script>
+        <a href="form.html" class="order-now-button">צרו קשר</a>
+</body>
+
+</html>
