@@ -22,9 +22,11 @@ All rights reserved.
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google" content="notranslate">
+<meta name="google" content="notranslate">
+<meta http-equiv="Content-Language" content="he">
 <title>YT Music</title>
 <meta name="keywords" content="YT music, yossi tachover, מקצבים, יוסי טכובר, Yossi Tachover Music,beats for yamaha">
-<link rel="icon" type="image/x-icon" href="images/favicon.png">
+<link data-react-helmet="true" rel="shortcut icon" href="images/favicon.png">
 <style>
 html {
     scroll-behavior: smooth;
@@ -46,6 +48,10 @@ body {
     padding-bottom: 380px;
 }
 
+.notranslate {
+    translate: no;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -57,33 +63,137 @@ body {
 /* ================= HEADER ================= */
 
 .header {
-    width: 100%;
     position: fixed;
-    top: 0;
-    left: 0;
-    background-color: transparent;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 24px);
+    max-width: 1900px;
+
+    background-color: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+
+    border-radius: 28px;
+    overflow: hidden;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    transition: transform 0.45s cubic-bezier(.25,.8,.25,1), opacity 0.3s ease;
-    will-change: transform;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,0.12),
+        0 2px 8px rgba(0,0,0,0.08);
+
+    transition:
+        transform 0.45s cubic-bezier(.25,.8,.25,1),
+        opacity 0.3s ease;
 }
 
 .header.hidden {
-    transform: translateY(-100%);
+    transform: translate(-50%, -120%);
     opacity: 0;
 }
 
 .header-image {
     width: 100%;
     height: auto;
+    display: block;
     object-fit: cover;
-    max-height: 300px;
+    max-height: 350px;
 }
 
+/* ================= MAGNIFYING LENS ================= */
+.zoom-content {
+    direction: ltr;
+    text-align: justify;
+    font-size: 1.15em;
+    color: #444;
+    user-select: none;
+}
+
+
+.zoom-lens {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border: 4px solid #0056b3;
+    border-radius: 50%;
+    pointer-events: none;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 0 25px rgba(0,0,0,0.4), inset 0 0 15px rgba(0,0,0,0.2);
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.lens-view {
+    position: absolute;
+    pointer-events: none;
+}
+
+#lensInnerContent {
+    position: absolute;
+    transform-origin: 0 0;
+    width: 100%;
+}
+
+
 /* ================= MAIN ================= */
+@media (max-width: 768px) {
+
+    body {
+        padding-top: 120px;
+        padding-bottom: 120px;
+    }
+
+    .container {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .main-content {
+        gap: 20px;
+    }
+
+    .left-section,
+    .right-section {
+        min-width: 100%;
+        max-width: 100%;
+        border-radius: 18px;
+    }
+
+    .right-section {
+        padding: 25px;
+    }
+
+    .main-content-top h1 {
+        font-size: clamp(2.3em, 10vw, 4em);
+    }
+
+    .main-content-top h2 {
+        font-size: clamp(1.2em, 5vw, 2em);
+    }
+
+    .footer-content {
+        padding: 25px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-image {
+        height: 240px;
+    }
+
+    .zoom-lens {
+        display: none !important;
+    }
+
+    .right-section {
+        cursor: default;
+    }
+}
 
 .main-content {
     display: flex;
@@ -128,7 +238,7 @@ body {
 .right-section {
     flex: 1;
     min-width: 300px;
-        background-color: #fff;
+    background-color: #fff;
     padding: 30px;
     border-radius: 15px;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
@@ -156,7 +266,7 @@ body {
 }
 
 .right-section p {
-    font-size: 1.1em;
+    font-size: 1em;
     color: #555;
     direction: rtl;
     text-align:justify;
@@ -234,28 +344,45 @@ body {
 /* ================= FOOTER ================= */
 
 .footer {
-    width: 100%;
+    width: calc(100% - 24px);
+    max-width: 1900px;
+
     position: fixed;
-    bottom: 0;
-    left: 0;
-    transform: translateY(100%);
+
+    left: 50%;
+    bottom: 12px;
+
+    transform: translateX(-50%) translateY(120%);
+
     background-color: transparent;
+
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
     transition: transform 0.7s cubic-bezier(.25,.8,.25,1);
+
     will-change: transform;
+
+    z-index: 999;
 }
 
 .footer.visible {
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 .footer-image {
     width: 100%;
     height: 300px;
+
     object-fit: cover;
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,0.12),
+        0 2px 8px rgba(0,0,0,0.08);
 }
 
 .footer-content {
@@ -318,6 +445,126 @@ body {
 .see-more-btn:hover {
     background-color: #0056b3;
 }
+
+/* ================= LIVE SCROLL EFFECTS ================= */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(80px) scale(0.96);
+    transition:
+        opacity 1s ease,
+        transform 1s cubic-bezier(.2,.65,.2,1);
+    will-change: transform, opacity;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Different animation styles */
+
+.reveal-left {
+    transform: translateX(-100px);
+}
+
+.reveal-right {
+    transform: translateX(100px);
+}
+
+.reveal-zoom {
+    transform: scale(0.8);
+}
+
+
+
+/* Active states */
+
+.reveal-left.active,
+.reveal-right.active,
+.reveal-zoom.active,
+
+
+/* Smooth floating feeling */
+
+.left-section,
+.right-section,
+.media-item,
+.beats-button {
+    transition:
+        transform 0.4s ease,
+        box-shadow 0.4s ease;
+}
+
+/* Hover live feeling */
+
+.media-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.left-section:hover,
+.right-section:hover {
+    transform: translateY(-5px);
+}
+
+/* Live scrolling depth */
+
+body.scrolling .header {
+    backdrop-filter: blur(18px);
+}
+
+/* Smooth image movement */
+
+.media-item img,
+.media-item video {
+    transition: transform 1.2s ease;
+}
+
+.media-item:hover img,
+.media-item:hover video {
+    transform: scale(1.05);
+}
+
+/* Slight floating animation */
+
+@keyframes softFloat {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0px); }
+}
+
+.main-content-top h1 {
+    animation: softFloat 5s ease-in-out infinite;
+}
+
+/* Button glow */
+
+.beats-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.beats-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.4),
+        transparent
+    );
+    transition: 0.8s;
+}
+
+.beats-button:hover::before {
+    left: 120%;
+}
+
 </style>
 </head>
 
@@ -329,48 +576,53 @@ body {
 
 <main class="container">
 
-    <div class="main-content-top">
+    <div class="main-content-top reveal reveal-zoom">
         <h1>Y.T. Music</h1>
         <div><br><br><br><br><br><br><br></div>
         <h2>המקצבים הכי מקצועים</h2>
     </div>
 
     <div class="main-content">
-        <section class="left-section">
+        <section class="left-section reveal reveal-left">
             <img src="images/index content/1.gif" class="gif-placeholder">
         </section>
 
-        <section class="right-section">
-    <div class="zoom-content">
-        <p>
-                <span style="display: block; text-align: center; color: rgb(43, 122, 232); font-size: 1.7em;">
-    <b>ברוכים הבאים ל-YT Music!</b>
-  </span>אנו מתמחים ביצירת מקצבים מקצועיים ואיכותיים למקלדות, המתאימים למגוון רחב של סגנונות מוזיקליים.  
-                    כל מקצב נוצר בקפידה רבה, תוך שימת דגש על הפרטים הקטנים ביותר, כדי להבטיח לכם חווית נגינה עשירה ומרגשת.  
-                    אנו מאמינים שמוזיקה היא שפה אוניברסלית, והמקצבים שלנו נועדו לעזור לכם לבטא את היצירתיות שלכם בצורה הטובה ביותר.  
-                    גלו את המקצב המושלם עבורכם והתחילו ליצור מוזיקה שתגע בלבבות. 
-              </p>
-    </div>
+       <section class="right-section reveal reveal-right" id="zoomBox">
+            <div class="zoom-content" id="originalContent">
+              <p>
+                <span style="display: block; text-align: center; color: rgb(43, 122, 232); font-size: 1.6em;">
+                    <b> ברוכים הבאים ל-YT Music!</b>
+                </span>
+                <b>אנו מתמחים ביצירת מקצבים מקצועים</b> ואיכותיים למקלדות, המתאימים<br>למגוון רחב של סגנונות מוזיקליים.  
+                כל מקצב נוצר בקפידה רבה, תוך שימת<br>דגש על הפרטים הקטנים ביותר, כדי  להבטיח לכם חווית  נגינה עשירה<br>ומרגשת.  
+                אנו מאמינים שמוזיקה היא שפה אוניברסלית, והמקצבים שלנו<br>נועדו לעזור לכם לבטא את היצירתיות שלכם בצורה הטובה ביותר.  
+                גלו את<br>המקצב המושלם עבורכם והתחילו ליצור מוזיקה שתגע בלבבות. 
+            </p>
+            </div>
 
-    <div class="zoom-lens" id="lens"></div>
-</section>
+    <div class="zoom-lens" id="lens">
+                <div class="lens-view">
+                    <div id="lensInnerContent"></div>
+                </div>
+            </div>
+        </section>
     </div>
 
 </main>
 
 <a href="dj.html" class="beats-button">לשמיעת המקצבים</a>
 
-<section class="container additional-content">
+<section class="container additional-content reveal">
 
     <div class="media-grid images">
-        <div class="media-item"><img src="images/index content/1.png"></div>
-        <div class="media-item"><img src="images/index content/2.png"></div>
-        <div class="media-item"><img src="images/index content/3.png"></div>
+        <div class="media-item reveal reveal-zoom"><img src="images/index content/1.png"></div>
+        <div class="media-item reveal reveal-zoom"><img src="images/index content/2.png"></div>
+        <div class="media-item reveal reveal-zoom"><img src="images/index content/3.png"></div>
     </div>
 
     <div class="media-grid videos">
-       <div class="media-item"><video controls src="images/index content/1.mp4" poster="images/index content/vid1.png"></video></div>
-       <div class="media-item"><video controls src="images/index content/2.mp4" poster="images/index content/vid1.png"></video></div>
+       <div class="media-item reveal reveal-zoom"><video controls src="images/index content/1.mp4" poster="images/index content/vid1.png"></video></div>
+       <div class="media-item reveal reveal-zoom"><video controls src="images/index content/2.mp4" poster="images/index content/vid1.png"></video></div>
     </div>
 <a href="
 https://www.youtube.com/channel/UCMBSqmdM_vYUpEobmye9Y-Q"target="_blank"class="see-more-btn"> טען עוד</a>
@@ -430,36 +682,90 @@ window.addEventListener('scroll', () => {
         ticking = true;
     }
 });
-const box = document.querySelector(".right-section");
+/** * Improved Magnifier Logic */
+const zoomBox = document.getElementById("zoomBox");
 const lens = document.getElementById("lens");
-const content = document.querySelector(".zoom-content");
+const originalContent = document.getElementById("originalContent");
+const lensInnerContent = document.getElementById("lensInnerContent");
+const zoomScale = 1.8;
 
-box.addEventListener("mouseenter", () => {
-    lens.style.display = "block";
-    box.style.cursor = "none";
+function setupMagnifier() {
+    lensInnerContent.innerHTML = originalContent.innerHTML;
+    
+    const syncSize = () => {
+        const boxStyles = window.getComputedStyle(zoomBox);
+        const paddingLeft = parseFloat(boxStyles.paddingLeft);
+        const boxWidth = zoomBox.clientWidth - (paddingLeft * 2);
+        
+        lensInnerContent.style.width = zoomBox.clientWidth + "px";
+    };
+
+    syncSize();
+    window.addEventListener('resize', syncSize);
+
+    zoomBox.addEventListener("mouseenter", () => {
+        if (window.innerWidth > 768) lens.style.display = "block";
+    });
+
+    zoomBox.addEventListener("mouseleave", () => {
+        lens.style.display = "none";
+    });
+
+    zoomBox.addEventListener("mousemove", (e) => {
+        const rect = zoomBox.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const lWidth = lens.offsetWidth;
+        const lHeight = lens.offsetHeight;
+
+        lens.style.left = (x - lWidth / 1.5) + "px";
+        lens.style.top = (y - lHeight / 7) + "px";
+
+        // Precise background alignment
+        const scrollX = (x * zoomScale) - (lWidth / 2);
+        const scrollY = (y * zoomScale) - (lHeight / 2);
+
+        lensInnerContent.style.transform = `translate(${-scrollX}px, ${-scrollY}px) scale(${zoomScale})`;
+    });
+}
+
+/* ================= SCROLL REVEAL ================= */
+
+const reveals = document.querySelectorAll('.reveal');
+
+function revealOnScroll() {
+    const triggerBottom = window.innerHeight * 0.88;
+
+    reveals.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+
+        if (rect.top < triggerBottom) {
+            element.classList.add('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
+
+/* ================= LIVE BODY FEEL ================= */
+
+let scrollTimer;
+
+window.addEventListener('scroll', () => {
+    document.body.classList.add('scrolling');
+
+    clearTimeout(scrollTimer);
+
+    scrollTimer = setTimeout(() => {
+        document.body.classList.remove('scrolling');
+    }, 150);
 });
 
-box.addEventListener("mouseleave", () => {
-    lens.style.display = "none";
-    box.style.cursor = "default";
-
-    // 🔥 RESET TO NORMAL
-    content.style.transform = "scale(1)";
-});
-
-box.addEventListener("mousemove", (e) => {
-    const rect = box.getBoundingClientRect();
-
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    lens.style.left = (x - 70) + "px";
-    lens.style.top = (y - 70) + "px";
-
-    // 🔥 ONLY zoom while hovering
-    content.style.transform =
-        `scale(2) translate(${-x / 2 + 70}px, ${-y / 2 + 70}px)`;
-});
+setupMagnifier();
+document.documentElement.setAttribute('translate', 'no');
+document.body.setAttribute('translate', 'no');
 </script>
 </body>
 </html>
