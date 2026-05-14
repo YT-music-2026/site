@@ -345,27 +345,44 @@ body {
 
 .footer {
     width: calc(100% - 24px);
+    max-width: 1900px;
+
     position: fixed;
-    bottom: 0;
-    left: 0;
-    transform: translateY(100%);
+
+    left: 50%;
+    bottom: 12px;
+
+    transform: translateX(-50%) translateY(120%);
+
     background-color: transparent;
+
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
     transition: transform 0.7s cubic-bezier(.25,.8,.25,1);
+
     will-change: transform;
+
+    z-index: 999;
 }
 
 .footer.visible {
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 .footer-image {
     width: 100%;
     height: 300px;
+
     object-fit: cover;
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,0.12),
+        0 2px 8px rgba(0,0,0,0.08);
 }
 
 .footer-content {
@@ -428,6 +445,126 @@ body {
 .see-more-btn:hover {
     background-color: #0056b3;
 }
+
+/* ================= LIVE SCROLL EFFECTS ================= */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(80px) scale(0.96);
+    transition:
+        opacity 1s ease,
+        transform 1s cubic-bezier(.2,.65,.2,1);
+    will-change: transform, opacity;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Different animation styles */
+
+.reveal-left {
+    transform: translateX(-100px);
+}
+
+.reveal-right {
+    transform: translateX(100px);
+}
+
+.reveal-zoom {
+    transform: scale(0.8);
+}
+
+
+
+/* Active states */
+
+.reveal-left.active,
+.reveal-right.active,
+.reveal-zoom.active,
+
+
+/* Smooth floating feeling */
+
+.left-section,
+.right-section,
+.media-item,
+.beats-button {
+    transition:
+        transform 0.4s ease,
+        box-shadow 0.4s ease;
+}
+
+/* Hover live feeling */
+
+.media-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.left-section:hover,
+.right-section:hover {
+    transform: translateY(-5px);
+}
+
+/* Live scrolling depth */
+
+body.scrolling .header {
+    backdrop-filter: blur(18px);
+}
+
+/* Smooth image movement */
+
+.media-item img,
+.media-item video {
+    transition: transform 1.2s ease;
+}
+
+.media-item:hover img,
+.media-item:hover video {
+    transform: scale(1.05);
+}
+
+/* Slight floating animation */
+
+@keyframes softFloat {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0px); }
+}
+
+.main-content-top h1 {
+    animation: softFloat 5s ease-in-out infinite;
+}
+
+/* Button glow */
+
+.beats-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.beats-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.4),
+        transparent
+    );
+    transition: 0.8s;
+}
+
+.beats-button:hover::before {
+    left: 120%;
+}
+
 </style>
 </head>
 
@@ -439,18 +576,18 @@ body {
 
 <main class="container">
 
-    <div class="main-content-top">
+    <div class="main-content-top reveal reveal-zoom">
         <h1>Y.T. Music</h1>
         <div><br><br><br><br><br><br><br></div>
         <h2>המקצבים הכי מקצועים</h2>
     </div>
 
     <div class="main-content">
-        <section class="left-section">
+        <section class="left-section reveal reveal-left">
             <img src="images/index content/1.gif" class="gif-placeholder">
         </section>
 
-       <section class="right-section" id="zoomBox">
+       <section class="right-section reveal reveal-right" id="zoomBox">
             <div class="zoom-content" id="originalContent">
               <p>
                 <span style="display: block; text-align: center; color: rgb(43, 122, 232); font-size: 1.6em;">
@@ -475,17 +612,17 @@ body {
 
 <a href="dj.html" class="beats-button">לשמיעת המקצבים</a>
 
-<section class="container additional-content">
+<section class="container additional-content reveal">
 
     <div class="media-grid images">
-        <div class="media-item"><img src="images/index content/1.png"></div>
-        <div class="media-item"><img src="images/index content/2.png"></div>
-        <div class="media-item"><img src="images/index content/3.png"></div>
+        <div class="media-item reveal reveal-zoom"><img src="images/index content/1.png"></div>
+        <div class="media-item reveal reveal-zoom"><img src="images/index content/2.png"></div>
+        <div class="media-item reveal reveal-zoom"><img src="images/index content/3.png"></div>
     </div>
 
     <div class="media-grid videos">
-       <div class="media-item"><video controls src="images/index content/1.mp4" poster="images/index content/vid1.png"></video></div>
-       <div class="media-item"><video controls src="images/index content/2.mp4" poster="images/index content/vid1.png"></video></div>
+       <div class="media-item reveal reveal-zoom"><video controls src="images/index content/1.mp4" poster="images/index content/vid1.png"></video></div>
+       <div class="media-item reveal reveal-zoom"><video controls src="images/index content/2.mp4" poster="images/index content/vid1.png"></video></div>
     </div>
 <a href="
 https://www.youtube.com/channel/UCMBSqmdM_vYUpEobmye9Y-Q"target="_blank"class="see-more-btn"> טען עוד</a>
@@ -592,6 +729,39 @@ function setupMagnifier() {
         lensInnerContent.style.transform = `translate(${-scrollX}px, ${-scrollY}px) scale(${zoomScale})`;
     });
 }
+
+/* ================= SCROLL REVEAL ================= */
+
+const reveals = document.querySelectorAll('.reveal');
+
+function revealOnScroll() {
+    const triggerBottom = window.innerHeight * 0.88;
+
+    reveals.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+
+        if (rect.top < triggerBottom) {
+            element.classList.add('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
+
+/* ================= LIVE BODY FEEL ================= */
+
+let scrollTimer;
+
+window.addEventListener('scroll', () => {
+    document.body.classList.add('scrolling');
+
+    clearTimeout(scrollTimer);
+
+    scrollTimer = setTimeout(() => {
+        document.body.classList.remove('scrolling');
+    }, 150);
+});
 
 setupMagnifier();
 document.documentElement.setAttribute('translate', 'no');
